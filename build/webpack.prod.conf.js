@@ -30,8 +30,10 @@ module.exports = {
     }
   },
   externals: {
-    vue: "vue",
-    axios: "axios"
+    "vue": "vue",
+    "axios": "axios",
+    "element-ui": "element-ui",
+    "qs": "qs"
   },
   module: {
     rules: [

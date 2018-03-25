@@ -17,7 +17,9 @@
   },
   "peerDependencies": {
     "axios": "^0.18.0",
-    "vue": "^2.5.15"
+    "element-ui": "^2.2.2",
+    "qs": "^6.5.1",
+    "vue": "^2.5.15"    
   },
   "files": [
     "src",
