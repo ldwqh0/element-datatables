@@ -1,13 +1,13 @@
 {
-  "name": "vue2-uploader",
-  "version": "0.0.4",
+  "name": "ele-data-tables",
+  "version": "0.0.1",
   "description": "A html5 vuejs uploader component",
   "author": "ldwqh0 <ldwqh0@outlook.com>",
   "main": "dist/index.js",
   "bugs": {
-    "url": "https://github.com/ldwqh0/vue2-uploader/issues"
+    "url": "https://github.com/ldwqh0/ele-data-tables/issues"
   },
-  "homepage": "https://github.com/ldwqh0/vue2-uploader",
+  "homepage": "https://github.com/ldwqh0/ele-data-tables",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
@@ -39,6 +39,7 @@
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.0",
+    "element-ui": "^2.2.2",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-friendly-formatter": "^3.0.0",
@@ -61,6 +62,7 @@
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
+    "qs": "^6.5.1",
     "rimraf": "^2.6.0",
     "semver": "^5.3.0",
     "shelljs": "^0.8.1",
