@@ -3,7 +3,7 @@
     <el-table v-if="!success" :data="tableData" :span-method="spanError">
       <slot>暂无数据2</slot>
     </el-table>
-    <el-table :data="tableData" v-if="success">
+    <el-table :data="tableData" v-if="success" :span-method="spanMethod">
       <slot>暂无数据</slot>
     </el-table>
     <el-row>
@@ -78,7 +78,8 @@
         total: 0,
         loadingCount: 0,
         success: true,
-        errorMsg: 'error'
+        errorMsg: 'error',
+        maxColumnIndex: 0
       }
     },
     created () {
@@ -94,13 +95,20 @@
         this.reloadData()
       },
       spanError ({row, column, rowIndex, columnIndex}) {
-        // 合并表头待实现
-        console.log('合并', row, column, rowIndex, columnIndex)
+        console.log(row, column, rowIndex, columnIndex)
+        if (this.maxColumnIndex < columnIndex) {
+          this.maxColumnIndex = columnIndex
+        }
         if (columnIndex === 0) {
-          return [1, 3]
+          column.align = 'is-center'
+          row[column.property] = this.errorMsg
+          return [1, this.maxColumnIndex + 1]
         } else {
           return [1, 0]
         }
+      },
+      spanMethod (obj) {
+        console.log(obj)
       },
       reloadLocalData () {
         let total = this.total = this.data.length

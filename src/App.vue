@@ -2,7 +2,7 @@
   <div id="app">
     <h1>ele-data-tables</h1>
     <ele-data-tables :ajax="ajax" ref="renovate">
-      <el-table-column prop="id" label="ID"/>
+      <el-table-column prop="id" label="ID" align="center"/>
       <el-table-column prop="name" label="姓名"/>
       <el-table-column label="操作">
         <template slot-scope="scope">
