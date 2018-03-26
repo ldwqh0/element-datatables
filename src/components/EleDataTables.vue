@@ -1,6 +1,9 @@
 <template>
   <div v-loading="loadingCount>0">
-    <el-table :data="tableData">
+    <el-table v-if="!success" :data="tableData" :span-method="spanError">
+      <slot>暂无数据2</slot>
+    </el-table>
+    <el-table :data="tableData" v-if="success">
       <slot>暂无数据</slot>
     </el-table>
     <el-row>
@@ -73,7 +76,9 @@
         currentPage: 1,
         pageSize: 10,
         total: 0,
-        loadingCount: 0
+        loadingCount: 0,
+        success: true,
+        errorMsg: 'error'
       }
     },
     created () {
@@ -87,6 +92,15 @@
       },
       handleCurrentChange (v) {
         this.reloadData()
+      },
+      spanError ({row, column, rowIndex, columnIndex}) {
+        // 合并表头待实现
+        console.log('合并', row, column, rowIndex, columnIndex)
+        if (columnIndex === 0) {
+          return [1, 3]
+        } else {
+          return [1, 0]
+        }
       },
       reloadLocalData () {
         let total = this.total = this.data.length
@@ -131,11 +145,18 @@
           this.loadingCount++
           $http(transelateAjax(ajax)).then(response => {
             response = response.data
-            if (response.success && response.draw === this.draw) {
+            if (response.success && +response.draw === this.draw) {
               this.total = response.recordsTotal
               this.tableData = response.data
+              this.success = true
+            } else {
+              this.success = false
+              this.tableData = [{id: 'xxx'}]
+              this.errorMsg = response.error
             }
           }).catch(e => {
+            this.success = false
+            this.tableData = [{id: 'xxx', name: 'good'}]
             console.error('从服务器获取数据时出错', e)
           }).finally(() => {
             this.loadingCount--
