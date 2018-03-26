@@ -10,9 +10,6 @@ module.exports = {
     assetsSubDirectory: 'static', // 静态资源的路径
     assetsPublicPath: '/',// 项目发布路径
     proxyTable: {
-     '/w': {
-        target: 'http://127.0.0.1:8080'
-      }
     },// devServer反向代理列表
 
     // Various Dev Server settings
@@ -27,7 +24,7 @@ module.exports = {
     // 格式错误会在控制台显示出来
     useEslint: true, //
     // 是否在devServer中用一个单独的层显示格式错误
-    showEslintErrorsInOverlay: true,
+    showEslintErrorsInOverlay: true,   
 
     /**
      * Source Maps
