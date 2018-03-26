@@ -1,7 +1,7 @@
 {
-  "name": "ele-data-tables",
-  "version": "0.0.1",
-  "description": "A html5 vuejs uploader component",
+  "name": "element-datatables",
+  "version": "0.0.2",
+  "description": "一个基于element-ui的Table组件",
   "author": "ldwqh0 <ldwqh0@outlook.com>",
   "main": "dist/index.js",
   "bugs": {
@@ -19,7 +19,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.2.2",
     "qs": "^6.5.1",
-    "vue": "^2.5.15"    
+    "vue": "^2.5.15"
   },
   "files": [
     "src",
@@ -88,6 +88,5 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ],
-  "dependencies": {}
+  ]
 }
