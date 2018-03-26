@@ -24,7 +24,7 @@
 
   // 由于axios中，对于对象的处理可能不太好，用QS翻译一下
   function transelateAjax (ajax) {
-    let ajax_ = Object.assign({}, ajax)
+    let ajax_ = {...ajax}
     if (ajax.method === 'post') {
       ajax.data = ajax.params
       delete ajax.params
@@ -106,18 +106,22 @@
         let draw = {draw: ++this.draw}
         if (typeof (this.ajax) === 'string') {
           ajax.url = this.ajax
-          ajax.params = Object.assign(draw, this.serverParams, {page: this.currentPage - 1, size: this.pageSize})
+          ajax.params = {...draw, ...this.serverParams, page: this.currentPage - 1, size: this.pageSize}
         } else {
+          if (!this.ajax.url) {
+            throw new Error('ajax url can not be empty')
+          }
+          ajax = {...ajax, ...this.ajax}// 如果ajax是个对象，进行合并
           // 无论如何，draw,page,size这三个参数一直作为params发送
           let params = {...draw, page: this.currentPage - 1, size: this.pageSize}
-          ajax.params = Object.assign({}, params)
+          ajax.params = {...params, ...this.ajax.params}
 
           if (ajax.method === 'post') {
             // 如果是post请求类型，将serverParams作为data发送
-            ajax.data = Object.assign({}, this.serverParams, this.ajax.data)
+            ajax.data = {...this.serverParams, ...this.ajax.data}
           } else if (ajax.method === 'get') {
             // 如果是get请求,将数据作为params发送
-            ajax.params = Object.assign({}, this.serverParams, this.ajax.params)
+            ajax.params = {...this.serverParams, ...this.ajax.params, ...params}
           }
         }
         if (!ajax.url) {
