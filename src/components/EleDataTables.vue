@@ -116,12 +116,12 @@
           let params = {...draw, page: this.currentPage - 1, size: this.pageSize}
           ajax.params = {...params, ...this.ajax.params}
 
-          if (ajax.method === 'post') {
-            // 如果是post请求类型，将serverParams作为data发送
-            ajax.data = {...this.serverParams, ...this.ajax.data}
-          } else if (ajax.method === 'get') {
+          if (ajax.method === 'get') {
             // 如果是get请求,将数据作为params发送
             ajax.params = {...this.serverParams, ...this.ajax.params, ...params}
+          } else {
+            // 如果是其它请求类型，将serverParams作为data发送
+            ajax.data = {...this.serverParams, ...this.ajax.data}
           }
         }
         if (!ajax.url) {
