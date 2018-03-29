@@ -1,36 +1,19 @@
 <template>
-  <div id="app">
-    <h1>ele-data-tables</h1>
-    <ele-data-tables :ajax="ajax" ref="renovate">
-      <el-table-column prop="id" label="ID" align="center"/>
-      <el-table-column prop="name" label="姓名"/>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <a style="margin-right: 10px;cursor: pointer" @click="op(scope.row)" class="link">操作</a>
-        </template>
-      </el-table-column>
-    </ele-data-tables>
-  </div>
+  <el-container>
+    <el-aside width="200px">
+      <el-menu router>
+        <el-menu-item index="1" route="/server">服务器数据</el-menu-item>
+        <el-menu-item index="2" route="/local">本地数据</el-menu-item>
+      </el-menu>
+    </el-aside>
+    <el-main>
+      <router-view/>
+    </el-main>>
+  </el-container>
 </template>
 
 <script>
-  import EleDataTables from './components'
-  import {TableColumn as ElTableColumn} from 'element-ui'
   export default {
-    components: {
-      EleDataTables,
-      ElTableColumn
-    },
-    data () {
-      return {
-        ajax: '/users'
-      }
-    },
-    methods: {
-      op (value) {
-        alert('你点击了' + JSON.stringify(value))
-      }
-    }
   }
 </script>
 <style lang="less">

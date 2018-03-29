@@ -95,7 +95,6 @@
         this.reloadData()
       },
       spanError ({row, column, rowIndex, columnIndex}) {
-        console.log(row, column, rowIndex, columnIndex)
         if (this.maxColumnIndex < columnIndex) {
           this.maxColumnIndex = columnIndex
         }
@@ -159,12 +158,12 @@
               this.success = true
             } else {
               this.success = false
-              this.tableData = [{id: 'xxx'}]
+              this.tableData = [{}]
               this.errorMsg = response.error
             }
           }).catch(e => {
             this.success = false
-            this.tableData = [{id: 'xxx', name: 'good'}]
+            this.tableData = [{}]
             console.error('从服务器获取数据时出错', e)
           }).finally(() => {
             this.loadingCount--
