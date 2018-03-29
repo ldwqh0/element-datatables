@@ -7,8 +7,14 @@
 npm i && npm run dev
 ```
 ## 基本用法
-* 你需要在你的入口文件中引入element相关的css文件.
-* 通过ajax获取数据
+* 安装相关依赖
+```
+npm i -S axios element-ui qs element-datatables
+```
+* 在项目中引入element-ui依赖,具体引入方式参见http://element.eleme.io.  
+  你需要在你的入口文件中引入element相关的css文件.
+* 通过以下两种方式之一展示数据
+  * 通过ajax获取数据
 ```html
 <template>
   <div id="app">
@@ -25,7 +31,7 @@ npm i && npm run dev
   </div>
 </template>
 <script>
-  import EleDataTables from './components'
+  import EleDataTables from 'element-datatables'
   import {TableColumn as ElTableColumn} from 'element-ui'
   export default {
     components: {
@@ -42,7 +48,7 @@ npm i && npm run dev
   }
 </script>
 ```
-* 通过设置data属性获取数据
+  * 通过设置data属性获取数据
 ```html
 <template>
   <div id="app">
@@ -59,7 +65,7 @@ npm i && npm run dev
   </div>
 </template>
 <script>
-  import EleDataTables from './components'
+  import EleDataTables from 'element-datatables'
   import {TableColumn as ElTableColumn} from 'element-ui'
   export default {
     components: {
@@ -105,7 +111,7 @@ element-datatable支持两种模式的数据显示,一是ajax服务模式,二是
 一个示例地址：get http://localhost/users?draw=0&page=0&size=10&keywords=good
 #### 服务器响应
 为了正确展示数据，服务器必须按照一定的规则响应数据，组件需要如下响应才能正常工作
-```javascript
+```typescript
 {
   "draw": Number, // 服务器应当原样返回该标记，主要是做请求响应适配
   "success": Boolean, // 服务器是否正确的响应了查询
@@ -115,7 +121,7 @@ element-datatable支持两种模式的数据显示,一是ajax服务模式,二是
 }
 ```
 以下是一个响应示例
-```javascript
+```json
 {
   "draw": 1,
   "success": true,
@@ -129,7 +135,7 @@ element-datatable支持两种模式的数据显示,一是ajax服务模式,二是
     },{
     "id":3,
     "name":"王五"
-  }...]
+  }]
 }
 ```
 #### 数据过滤
@@ -148,6 +154,6 @@ element-datatable支持两种模式的数据显示,一是ajax服务模式,二是
 * 其它的实例方法不建议使用
 ## 更新历史
 * 0.0.4
-  
+  修改说明文件，修改说明示例
 * 0.0.1-0.0.3
   初始版本
