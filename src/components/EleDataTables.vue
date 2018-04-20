@@ -1,20 +1,41 @@
 <template>
   <div v-loading="loadingCount>0">
-    <el-table v-if="!success" :data="tableData" :span-method="spanError">
+    <el-table v-if="!success" :span-method="spanError">
       <slot>暂无数据2</slot>
     </el-table>
-    <el-table :data="tableData" v-if="success" :span-method="spanMethod">
+    <el-table :data="tableData"
+              v-if="success"
+              @select="onSelect"
+              @select-all="onSelectAll"
+              @selection-change="onSelectionChange"
+              @cell-mouse-enter="onCellMouseEnter"
+              @cell-mouse-leave="onCellMouseLeave"
+              @cell-click="onCellClick"
+              @cell-dblclick="onCellDblclick"
+              @row-click="onRowClick"
+              @row-contextmenu="onRowContextmenu"
+              @row-dblclick="onRowDblclick"
+              @header-click="onHeaderClick"
+              @header-contextmenu="onHeaderContextmenu"
+              @sort-change="onSortChange"
+              @filter-change="onFilterChange"
+              @current-change="onCurrentChange"
+              @header-dragend="onHeaderDragend"
+              @expand-change="onExpandChange"
+              :span-method="spanMethod">
       <slot>暂无数据</slot>
     </el-table>
     <el-row>
       <el-col :span="24" style="text-align: right;">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="pageSize"
-          layout="total, prev, pager, next"
-          :total="total"/>
+        <slot name="pagination">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-size="pageSize"
+            :layout="paginationLayout"
+            :total="total"/>
+        </slot>
       </el-col>
     </el-row>
   </div>
@@ -22,6 +43,7 @@
 <script>
   import axios from 'axios'
   import { Row as ElRow, Col as ElCol, Table as ElTable, Pagination as ElPagination, Loading } from 'element-ui'
+
   const qs = require('qs')
   const $http = axios.create()
 
@@ -66,6 +88,10 @@
       serverParams: {
         default: () => {},
         type: Object
+      },
+      paginationLayout: {
+        default: () => 'total, prev, pager, next',
+        type: String
       }
     },
     name: 'EleDataTables',
@@ -88,6 +114,57 @@
     },
     computed: {},
     methods: {
+      onSelect (selection, row) {
+        this.$emit('select', selection, row)
+      },
+      onSelectAll (selection) {
+        this.$emit('select-all', selection)
+      },
+      onSelectionChange (selection) {
+        this.$emit('selection-change', selection)
+      },
+      onCellMouseEnter (row, column, cell, event) {
+        this.$emit('cell-mouse-enter', row, column, cell, event)
+      },
+      onCellMouseLeave (row, column, cell, event) {
+        this.$emit('cell-mouse-leave', row, column, cell, event)
+      },
+      onCellClick (row, column, cell, event) {
+        this.$emit('cell-click', row, column, cell, event)
+      },
+      onCellDblclick (row, column, cell, event) {
+        this.$emit('cell-dblclick', row, column, cell, event)
+      },
+      onRowClick (row, event, column) {
+        this.$emit('row-click', row, event, column)
+      },
+      onRowContextmenu (row, event) {
+        this.$emit('row-contextmenu', row, event)
+      },
+      onRowDblclick (row, event) {
+        this.$emit('row-dblclick', row, event)
+      },
+      onHeaderClick (column, event) {
+        this.$emit('header-click', column, event)
+      },
+      onHeaderContextmenu (column, event) {
+        this.$emit('header-contextmenu', column, event)
+      },
+      onSortChange ({column, prop, order}) {
+        this.$emit('sort-change', {column, prop, order})
+      },
+      onFilterChange (filters) {
+        this.$emit('filter-change', filters)
+      },
+      onCurrentChange (currentRow, oldCurrentRow) {
+        this.$emit('current-change', currentRow, oldCurrentRow)
+      },
+      onHeaderDragend (newWidth, oldWidth, column, event) {
+        this.$emit('header-dragend', newWidth, oldWidth, column, event)
+      },
+      onExpandChange (row, expandedRows) {
+        this.$emit('expand-change', row, expandedRows)
+      },
       handleSizeChange (v) {
         this.reloadData()
       },
@@ -107,7 +184,7 @@
         }
       },
       spanMethod (obj) {
-        console.log(obj)
+        // console.log(obj)
       },
       reloadLocalData () {
         let total = this.total = this.data.length

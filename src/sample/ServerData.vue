@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <h1>ele-data-tables</h1>
-    <ele-data-tables ajax="/users" ref="renovate">
+    <ele-data-tables ajax="/users" ref="renovate" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55"/>
       <el-table-column prop="id" label="ID" align="center"/>
       <el-table-column prop="name" label="姓名"/>
       <el-table-column label="操作">
@@ -16,16 +17,21 @@
   import Vue from 'vue'
   import { Component } from 'vue-property-decorator'
   import EleDataTables from '../components'
-  import {TableColumn as ElTableColumn} from 'element-ui'
+  import { TableColumn as ElTableColumn } from 'element-ui'
+
   @Component({
-      components: {
-          EleDataTables,
-          ElTableColumn
-      }
+    components: {
+      EleDataTables,
+      ElTableColumn
+    }
   })
   export default class ServerData extends Vue {
     op (value) {
       alert('你点击了' + JSON.stringify(value))
+    }
+
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     }
   }
 </script>
