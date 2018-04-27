@@ -1,7 +1,7 @@
 <template>
-  <div v-loading="loadingCount>0">
+  <div v-loading="showLoading && loadingCount>0">
     <el-table v-if="!success" :span-method="spanError">
-      <slot>暂无数据2</slot>
+      <slot>发生错误</slot>
     </el-table>
     <el-table :data="tableData"
               v-if="success"
@@ -42,7 +42,7 @@
 </template>
 <script>
   import axios from 'axios'
-  import { Row as ElRow, Col as ElCol, Table as ElTable, Pagination as ElPagination, Loading } from 'element-ui'
+  import { Row as ElRow, Col as ElCol, Table as ElTable, Pagination as ElPagination, Loading as VLoading } from 'element-ui'
 
   const qs = require('qs')
   const $http = axios.create()
@@ -74,7 +74,7 @@
       ElRow, ElCol, ElTable, ElPagination
     },
     directives: {
-      Loading
+      VLoading
     },
     props: {
       data: {
@@ -88,6 +88,10 @@
       serverParams: {
         default: () => {},
         type: Object
+      },
+      showLoading: {
+        default: () => true,
+        type: Boolean
       },
       paginationLayout: {
         default: () => 'total, prev, pager, next',
