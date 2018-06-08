@@ -42,7 +42,13 @@
 </template>
 <script>
   import axios from 'axios'
-  import { Row as ElRow, Col as ElCol, Table as ElTable, Pagination as ElPagination, Loading as VLoading } from 'element-ui'
+  import {
+    Row as ElRow,
+    Col as ElCol,
+    Table as ElTable,
+    Pagination as ElPagination,
+    Loading as VLoading
+  } from 'element-ui'
 
   const qs = require('qs')
   const $http = axios.create()
@@ -170,6 +176,7 @@
         this.$emit('expand-change', row, expandedRows)
       },
       handleSizeChange (v) {
+        this.pageSize = v
         this.reloadData()
       },
       handleCurrentChange (v) {
