@@ -42,13 +42,11 @@
 </template>
 <script>
   import axios from 'axios'
-  import {
-    Row as ElRow,
-    Col as ElCol,
-    Table as ElTable,
-    Pagination as ElPagination,
-    Loading as VLoading
-  } from 'element-ui'
+  import ElRow from 'element-ui/lib/row'
+  import ElCol from 'element-ui/lib/col'
+  import ElTable from 'element-ui/lib/table'
+  import ElPagination from 'element-ui/lib/pagination'
+  import VLoading from 'element-ui/lib/loading'
 
   const qs = require('qs')
   const $http = axios.create()
