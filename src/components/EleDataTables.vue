@@ -58,12 +58,11 @@
       ajax.data = ajax.params
       delete ajax.params
     }
-    if (ajax.params) {
-      if (qs) { // 如果qs库存在，将数据使用qs库转码
-        let qs_ = qs.stringify(ajax.params, {arrayFormat: 'repeat'})
-        ajax_.url = `${ajax_.url}?${qs_}`
-        delete ajax_.params
-      }
+    if (ajax.params && qs) {
+      // 如果qs库存在，将数据使用qs库转码
+      let qs_ = qs.stringify(ajax.params, {arrayFormat: 'repeat'})
+      ajax_.url = `${ajax_.url}?${qs_}`
+      delete ajax_.params
     }
     return ajax_
   }
@@ -271,10 +270,12 @@
       serverParams: {
         deep: true,
         handler (newVal, oldVal) {
+          this.currentPage = 0
           this.reloadAjaxData()
         }
       },
       ajax (newVal, oldVal) {
+        this.currentPage = 0
         this.reloadAjaxData()
       }
     }
