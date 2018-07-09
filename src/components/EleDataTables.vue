@@ -270,12 +270,12 @@
       serverParams: {
         deep: true,
         handler (newVal, oldVal) {
-          this.currentPage = 0
+          this.currentPage = 1
           this.reloadAjaxData()
         }
       },
       ajax (newVal, oldVal) {
-        this.currentPage = 0
+        this.currentPage = 1
         this.reloadAjaxData()
       }
     }
