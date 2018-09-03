@@ -53,14 +53,14 @@
 
   // 由于axios中，对于对象的处理可能不太好，用QS翻译一下
   function transelateAjax (ajax) {
-    let ajax_ = {...ajax}
+    let ajax_ = Object.assign({}, ajax)
     if (ajax.method === 'post') {
       ajax.data = ajax.params
       delete ajax.params
     }
     if (ajax.params && qs) {
       // 如果qs库存在，将数据使用qs库转码
-      let qs_ = qs.stringify(ajax.params, {arrayFormat: 'repeat'})
+      let qs_ = qs.stringify(ajax.params, { arrayFormat: 'repeat' })
       ajax_.url = `${ajax_.url}?${qs_}`
       delete ajax_.params
     }
@@ -157,8 +157,8 @@
       onHeaderContextmenu (column, event) {
         this.$emit('header-contextmenu', column, event)
       },
-      onSortChange ({column, prop, order}) {
-        this.$emit('sort-change', {column, prop, order})
+      onSortChange ({ column, prop, order }) {
+        this.$emit('sort-change', { column, prop, order })
       },
       onFilterChange (filters) {
         this.$emit('filter-change', filters)
@@ -179,7 +179,7 @@
       handleCurrentChange (v) {
         this.reloadData()
       },
-      spanError ({row, column, rowIndex, columnIndex}) {
+      spanError ({ row, column, rowIndex, columnIndex }) {
         if (this.maxColumnIndex < columnIndex) {
           this.maxColumnIndex = columnIndex
         }
@@ -209,25 +209,25 @@
           url: '',
           method: 'get'
         }
-        let draw = {draw: ++this.draw}
+        let draw = { draw: ++this.draw }
         if (typeof (this.ajax) === 'string') {
           ajax.url = this.ajax
-          ajax.params = {...draw, ...this.serverParams, page: this.currentPage - 1, size: this.pageSize}
+          ajax.params = Object.assign({ page: this.currentPage - 1, size: this.pageSize }, draw, this.serverParams)
         } else {
           if (!this.ajax.url) {
             throw new Error('ajax url can not be empty')
           }
-          ajax = {...ajax, ...this.ajax}// 如果ajax是个对象，进行合并
+          ajax = Object.assign({}, ajax, this.ajax) // 如果ajax是个对象，进行合并
           // 无论如何，draw,page,size这三个参数一直作为params发送
-          let params = {...draw, page: this.currentPage - 1, size: this.pageSize}
-          ajax.params = {...params, ...this.ajax.params}
+          let params = Object.assign({ page: this.currentPage - 1, size: this.pageSize }, draw)
+          ajax.params = Object.assign({}, params, this.ajax.params)
 
           if (ajax.method === 'get') {
             // 如果是get请求,将数据作为params发送
-            ajax.params = {...this.serverParams, ...this.ajax.params, ...params}
+            ajax.params = Object.assign({}, this.serverParams, this.ajax.params, params)
           } else {
             // 如果是其它请求类型，将serverParams作为data发送
-            ajax.data = {...this.serverParams, ...this.ajax.data}
+            ajax.data = Object.assign({}, this.serverParams, this.ajax.data)
           }
         }
         if (!ajax.url) {
