@@ -22,9 +22,9 @@ module.exports = {
 
     // 是否使用 Eslint Loader 在编译过程中检查书写错误?
     // 格式错误会在控制台显示出来
-    useEslint: true, //
+    useEslint: false, //
     // 是否在devServer中用一个单独的层显示格式错误
-    showEslintErrorsInOverlay: true,   
+    showEslintErrorsInOverlay: true,
 
     /**
      * Source Maps

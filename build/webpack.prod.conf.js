@@ -1,5 +1,4 @@
 const utils = require('./utils')
-const vueLoaderConfig = require('./vue-loader.conf')
 const config = require('../config')
 
 // 创建eslint规则
@@ -21,7 +20,7 @@ module.exports = {
   output: {
     libraryTarget: 'umd'
   },
-  mode: "production",
+  mode: 'production',
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
@@ -30,22 +29,9 @@ module.exports = {
     }
   },
   externals: {
-    "vue": "vue",
-    "axios": "axios",
-    "element-ui": "element-ui",
-    "qs": "qs"
-  },
-  module: {
-    rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [utils.resolve('src'), utils.resolve('test')]
-      }, {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
-      }]
+    'vue': 'vue',
+    'axios': 'axios',
+    'element-ui': 'element-ui',
+    'qs': 'qs'
   }
 }

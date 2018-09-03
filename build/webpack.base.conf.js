@@ -1,6 +1,7 @@
 const utils = require('./utils')
 const vueLoaderConfig = require('./vue-loader.conf')
 const config = require('../config')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 // 创建eslint规则
 const createLintingRule = () => ({
@@ -16,7 +17,7 @@ const createLintingRule = () => ({
 
 module.exports = {
   entry: {
-    app: utils.resolve('src/main.js') //程序入口点
+    app: utils.resolve('src/index.js') //程序入口点
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -29,13 +30,20 @@ module.exports = {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          transformAssetUrls: {
+            video: ['src', 'poster'],
+            source: 'src',
+            img: 'src',
+            image: 'xlink:href'
+          }
+        }
+      }, {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [utils.resolve('src'), utils.resolve('test')]
-      }, {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
       }, {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
@@ -58,5 +66,8 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash].[ext]')
         }
       }]
-  }
+  },
+  plugins: [
+    new VueLoaderPlugin()
+  ]
 }
