@@ -24,7 +24,8 @@
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    ".babelrc"
   ],
   "devDependencies": {
     "@babel/cli": "^7.0.0",
