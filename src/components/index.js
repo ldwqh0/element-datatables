@@ -1,3 +1,2 @@
-import EleDataTables from './EleDataTables'
-
-export default EleDataTables
+import ElementDataTables from './element-datatable.vue'
+export default ElementDataTables
