@@ -41,7 +41,6 @@
   </div>
 </template>
 <script>
-  // import axios from 'axios'
   import ElRow from 'element-ui/lib/row'
   import ElCol from 'element-ui/lib/col'
   import ElTable from 'element-ui/lib/table'
@@ -161,7 +160,6 @@
       onSortChange (event) {
         // 当排序项目改变时
         this.sort = event
-        console.log('排序改变了', event)
         if (this.data) {
 
         } else {
@@ -251,10 +249,10 @@
           }
         }
         if (!ajax.url) {
-          console.debug('url不存在！不读取数据')
+          // console.debug('url不存在！不读取数据')
         } else {
           ajax.params.sort = sortArr
-          console.debug('ajax from url', ajax.url)
+          // console.debug('ajax from url', ajax.url)
           this.loadingCount++
           config.$http(transelateAjax(ajax)).then(response => {
             response = response.data
