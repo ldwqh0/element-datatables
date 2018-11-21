@@ -112,7 +112,8 @@
         loadingCount: 0,
         success: true,
         errorMsg: 'error',
-        maxColumnIndex: 0
+        maxColumnIndex: 0,
+        sort: {}
       }
     },
     created () {
@@ -157,8 +158,16 @@
       onHeaderContextmenu (column, event) {
         this.$emit('header-contextmenu', column, event)
       },
-      onSortChange ({ column, prop, order }) {
-        this.$emit('sort-change', { column, prop, order })
+      onSortChange (event) {
+        // 当排序项目改变时
+        this.sort = event
+        console.log('排序改变了', event)
+        if (this.data) {
+
+        } else {
+          this.reloadAjaxData()
+        }
+        this.$emit('sort-change', event)
       },
       onFilterChange (filters) {
         this.$emit('filter-change', filters)
@@ -210,6 +219,17 @@
           method: 'get'
         }
         let draw = { draw: ++this.draw }
+        let sortArr = []
+        let { prop, order } = this.sort
+        if (order === 'ascending') {
+          order = 'asc'
+        }
+        if (order === 'descending') {
+          order = 'desc'
+        }
+        if (this.sort.prop) {
+          sortArr.push(`${prop},${order}`)
+        }
         if (typeof (this.ajax) === 'string') {
           ajax.url = this.ajax
           ajax.params = Object.assign({ page: this.currentPage - 1, size: this.pageSize }, draw, this.serverParams)
@@ -233,6 +253,7 @@
         if (!ajax.url) {
           console.debug('url不存在！不读取数据')
         } else {
+          ajax.params.sort = sortArr
           console.debug('ajax from url', ajax.url)
           this.loadingCount++
           $http(transelateAjax(ajax)).then(response => {
