@@ -47,7 +47,7 @@
   import ElTable from 'element-ui/lib/table'
   import ElPagination from 'element-ui/lib/pagination'
   import VLoading from 'element-ui/lib/loading'
-  import { $http } from './config'
+  import config from './config'
 
   const qs = require('qs')
 
@@ -256,7 +256,7 @@
           ajax.params.sort = sortArr
           console.debug('ajax from url', ajax.url)
           this.loadingCount++
-          $http(transelateAjax(ajax)).then(response => {
+          config.$http(transelateAjax(ajax)).then(response => {
             response = response.data
             if (response.success && +response.draw === this.draw) {
               this.total = response.recordsTotal
