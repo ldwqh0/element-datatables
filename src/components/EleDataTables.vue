@@ -41,15 +41,15 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
+  // import axios from 'axios'
   import ElRow from 'element-ui/lib/row'
   import ElCol from 'element-ui/lib/col'
   import ElTable from 'element-ui/lib/table'
   import ElPagination from 'element-ui/lib/pagination'
   import VLoading from 'element-ui/lib/loading'
+  import { $http } from './config'
 
   const qs = require('qs')
-  const $http = axios.create()
 
   // 由于axios中，对于对象的处理可能不太好，用QS翻译一下
   function transelateAjax (ajax) {
