@@ -219,13 +219,13 @@
         let draw = { draw: ++this.draw }
         let sortArr = []
         let { prop, order } = this.sort
-        if (order === 'ascending') {
-          order = 'asc'
-        }
-        if (order === 'descending') {
-          order = 'desc'
-        }
-        if (this.sort.prop) {
+        if (prop && order) {
+          if (order === 'ascending') {
+            order = 'asc'
+          }
+          if (order === 'descending') {
+            order = 'desc'
+          }
           sortArr.push(`${prop},${order}`)
         }
         if (typeof (this.ajax) === 'string') {
