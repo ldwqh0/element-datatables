@@ -88,8 +88,13 @@
         type: [String, Object]
       },
       serverParams: {
-        default: () => {},
+        default: () => {
+        },
         type: Object
+      },
+      saveState: { // 是否保存表格状态
+        default: () => false,
+        type: [Boolean, String]
       },
       showLoading: {
         default: () => true,
@@ -251,8 +256,16 @@
         if (!ajax.url) {
           // console.debug('url不存在！不读取数据')
         } else {
+          let sort = ajax.params.sort
+          if (sort !== null && sort !== undefined) {
+            if (typeof sort === 'string') {
+              sortArr.push(sort)
+            }
+            if (Array.isArray(sort)) {
+              sortArr = [...sortArr, ...sort]
+            }
+          }
           ajax.params.sort = sortArr
-          // console.debug('ajax from url', ajax.url)
           this.loadingCount++
           config.$http(transelateAjax(ajax)).then(response => {
             response = response.data
