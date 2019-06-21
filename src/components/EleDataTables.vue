@@ -273,6 +273,10 @@
               this.total = response.recordsTotal
               this.tableData = response.data
               this.success = true
+              // 如果当前页数没有获取到数据，递归调用，重新获取数据
+              if (response.data.length <= 0 && response.recordsTotal > 0) {
+                this.reloadAjaxData()
+              }
             } else {
               this.success = false
               this.tableData = [{}]
