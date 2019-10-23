@@ -66,7 +66,6 @@
     return ajax_
   }
 
-  // let draw = 0 // 定义变量，标记draw
   /**
    * 一个表格组件，在组件内部实现分页和数据请求逻辑,
    * 如过你要在你的程序中设置表格条件，可以先设置serverParams,然后再设置ajax属性，这样就不会重复发送请求了
@@ -103,6 +102,9 @@
       paginationLayout: {
         default: () => 'total, prev, pager, next',
         type: String
+      },
+      http: {
+        type: [Object]
       }
     },
     name: 'EleDataTables',
@@ -124,7 +126,16 @@
       // 载入数据
       this.reloadData()
     },
-    computed: {},
+    computed: {
+      httpInstance () {
+        const http = this.http || config.$http
+        http.interceptors.request.use(config => {
+          config.draw = this.draw
+          return config
+        })
+        return http
+      }
+    },
     methods: {
       onSelect (selection, row) {
         this.$emit('select', selection, row)
@@ -267,20 +278,31 @@
           }
           ajax.params.sort = sortArr
           this.loadingCount++
-          config.$http(transelateAjax(ajax)).then(response => {
-            response = response.data
-            if (response.success && +response.draw === this.draw) {
-              this.total = response.recordsTotal
-              this.tableData = response.data
-              this.success = true
-              // 如果当前页数没有获取到数据，递归调用，重新获取数据
-              if (response.data.length <= 0 && response.recordsTotal > 0) {
-                this.reloadAjaxData()
+          this.httpInstance(transelateAjax(ajax)).then(({ data, config }) => {
+            // 判断当前响应是否当前请求
+            // 后端不再需要强制返回draw
+            if (config.draw === this.draw) {
+              if (data instanceof Array) {
+                // TODO 如果直接返回数组应该怎么处理
+              } else {
+                if (data.success) {
+                  this.total = data.recordsTotal
+                  this.tableData = data.data
+                  this.success = true
+                  // 如果当前页数没有获取到数据，递归调用，重新获取数据
+                  if (data.data.length <= 0 && data.recordsTotal > 0) {
+                    this.reloadAjaxData()
+                  }
+                } else if (data.totalElements) {
+                  this.success = true
+                  this.total = data.totalElements
+                  this.tableData = data.content
+                } else {
+                  this.success = false
+                  this.tableData = [{}]
+                  this.errorMsg = data.error
+                }
               }
-            } else {
-              this.success = false
-              this.tableData = [{}]
-              this.errorMsg = response.error
             }
           }).catch(e => {
             this.success = false
