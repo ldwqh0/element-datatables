@@ -50,22 +50,6 @@
 
   const qs = require('qs')
 
-  // 由于axios中，对于对象的处理可能不太好，用QS翻译一下
-  function transelateAjax (ajax) {
-    let ajax_ = Object.assign({}, ajax)
-    if (ajax.method === 'post') {
-      ajax.data = ajax.params
-      delete ajax.params
-    }
-    if (ajax.params && qs) {
-      // 如果qs库存在，将数据使用qs库转码
-      let qs_ = qs.stringify(ajax.params, { arrayFormat: 'repeat' })
-      ajax_.url = `${ajax_.url}?${qs_}`
-      delete ajax_.params
-    }
-    return ajax_
-  }
-
   /**
    * 一个表格组件，在组件内部实现分页和数据请求逻辑,
    * 如过你要在你的程序中设置表格条件，可以先设置serverParams,然后再设置ajax属性，这样就不会重复发送请求了
@@ -128,12 +112,7 @@
     },
     computed: {
       httpInstance () {
-        const http = this.http || config.$http
-        http.interceptors.request.use(config => {
-          config.draw = this.draw
-          return config
-        })
-        return http
+        return this.http || config.$http
       }
     },
     methods: {
@@ -244,6 +223,7 @@
           }
           sortArr.push(`${prop},${order}`)
         }
+        // 构建ajax对象
         if (typeof (this.ajax) === 'string') {
           ajax.url = this.ajax
           ajax.params = Object.assign({ page: this.currentPage - 1, size: this.pageSize }, draw, this.serverParams)
@@ -253,16 +233,10 @@
           }
           ajax = Object.assign({}, ajax, this.ajax) // 如果ajax是个对象，进行合并
           // 无论如何，draw,page,size这三个参数一直作为params发送
-          let params = Object.assign({ page: this.currentPage - 1, size: this.pageSize }, draw)
-          ajax.params = Object.assign({}, params, this.ajax.params)
-
-          if (ajax.method === 'get') {
-            // 如果是get请求,将数据作为params发送
-            ajax.params = Object.assign({}, this.serverParams, this.ajax.params, params)
-          } else {
-            // 如果是其它请求类型，将serverParams作为data发送
-            ajax.data = Object.assign({}, this.serverParams, this.ajax.data)
-          }
+          ajax.params = Object.assign({ draw }, this.serverParams, {
+            page: this.currentPage - 1,
+            size: this.pageSize
+          }, this.ajax.params)
         }
         if (!ajax.url) {
           // console.debug('url不存在！不读取数据')
@@ -278,10 +252,15 @@
           }
           ajax.params.sort = sortArr
           this.loadingCount++
-          this.httpInstance(transelateAjax(ajax)).then(({ data, config }) => {
+          this.httpInstance({
+            ...ajax,
+            // TODO 如果服务器这里不需要draw参数，可以在paramsSerializer方法中删除发送到服务器的数据
+            // 当前的draw参数，是为了匹配ajax请求和响应的对应关系而存在的
+            paramsSerializer: () => qs.stringify(ajax.params, { arrayFormat: 'repeat' })
+          }).then(({ data, config }) => {
             // 判断当前响应是否当前请求
             // 后端不再需要强制返回draw
-            if (config.draw === this.draw) {
+            if (config.params.draw === this.draw) {
               if (data instanceof Array) {
                 // TODO 如果直接返回数组应该怎么处理
               } else {
@@ -293,10 +272,10 @@
                   if (data.data.length <= 0 && data.recordsTotal > 0) {
                     this.reloadAjaxData()
                   }
-                } else if (data.totalElements) {
-                  this.success = true
-                  this.total = data.totalElements
-                  this.tableData = data.content
+                } else if (data.hasOwnProperty('totalElements')) {
+                  this.$set(this, 'success', true)
+                  this.$set(this, 'total', data.totalElements)
+                  this.$set(this, 'tableData', data.content)
                 } else {
                   this.success = false
                   this.tableData = [{}]
