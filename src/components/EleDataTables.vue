@@ -88,7 +88,8 @@
         type: String
       },
       http: {
-        type: [Object]
+        type: [Object],
+        default: () => null
       }
     },
     name: 'EleDataTables',
@@ -264,6 +265,7 @@
               if (data instanceof Array) {
                 // TODO 如果直接返回数组应该怎么处理
               } else {
+                // 对于老版本的的响应的处理，
                 if (data.success) {
                   this.total = data.recordsTotal
                   this.tableData = data.data
@@ -273,9 +275,14 @@
                     this.reloadAjaxData()
                   }
                 } else if (data.hasOwnProperty('totalElements')) {
-                  this.$set(this, 'success', true)
-                  this.$set(this, 'total', data.totalElements)
-                  this.$set(this, 'tableData', data.content)
+                  // 对于新版本Page响应的响应的处理
+                  if (data.content.length <= 0 && data.totalElements > 0) {
+                    this.reloadAjaxData()
+                  } else {
+                    this.$set(this, 'success', true)
+                    this.$set(this, 'total', data.totalElements)
+                    this.$set(this, 'tableData', data.content)
+                  }
                 } else {
                   this.success = false
                   this.tableData = [{}]
