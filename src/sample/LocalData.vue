@@ -5,10 +5,10 @@
 </template>
 <script>
   import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+  import { Component } from 'vue-property-decorator'
   @Component({
-      components: {
-      }
+    components: {
+    }
   })
   export default class LocalData extends Vue {
 

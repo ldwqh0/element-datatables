@@ -7,8 +7,8 @@
       </el-menu>
     </el-aside>
     <el-main>
-      <router-view/>
-    </el-main>>
+      <router-view />
+    </el-main>
   </el-container>
 </template>
 
@@ -17,5 +17,4 @@
   }
 </script>
 <style lang="less">
-
 </style>
