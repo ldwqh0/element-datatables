@@ -1,40 +1,42 @@
 <template>
   <div v-loading="showLoading && loadingCount>0">
-    <el-table v-if="!success" :span-method="spanError">
+    <div v-if="!success">{{success}}</div>
+    <el-table class="error" :span-method="spanError">
+      <!--错误信息需要处理-->
       <slot>发生错误</slot>
     </el-table>
-    <el-table :data="tableData"
-              v-if="success"
-              @select="onSelect"
-              @select-all="onSelectAll"
-              @selection-change="onSelectionChange"
-              @cell-mouse-enter="onCellMouseEnter"
-              @cell-mouse-leave="onCellMouseLeave"
-              @cell-click="onCellClick"
-              @cell-dblclick="onCellDblclick"
-              @row-click="onRowClick"
-              @row-contextmenu="onRowContextmenu"
-              @row-dblclick="onRowDblclick"
-              @header-click="onHeaderClick"
-              @header-contextmenu="onHeaderContextmenu"
-              @sort-change="onSortChange"
-              @filter-change="onFilterChange"
-              @current-change="onCurrentChange"
-              @header-dragend="onHeaderDragend"
-              @expand-change="onExpandChange"
-              :span-method="spanMethod">
+    <el-table
+      :data="tableData"
+      v-if="success"
+      @select="onSelect"
+      @select-all="onSelectAll"
+      @selection-change="onSelectionChange"
+      @cell-mouse-enter="onCellMouseEnter"
+      @cell-mouse-leave="onCellMouseLeave"
+      @cell-click="onCellClick"
+      @cell-dblclick="onCellDblclick"
+      @row-click="onRowClick"
+      @row-contextmenu="onRowContextmenu"
+      @row-dblclick="onRowDblclick"
+      @header-click="onHeaderClick"
+      @header-contextmenu="onHeaderContextmenu"
+      @sort-change="onSortChange"
+      @filter-change="onFilterChange"
+      @current-change="onCurrentChange"
+      @header-dragend="onHeaderDragend"
+      @expand-change="onExpandChange"
+      :span-method="spanMethod">
       <slot>暂无数据</slot>
     </el-table>
     <el-row>
       <el-col :span="24" style="text-align: right;">
         <slot name="pagination">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page.sync="currentPage"
-            :page-size="pageSize"
-            :layout="paginationLayout"
-            :total="total"/>
+          <el-pagination @size-change="handleSizeChange"
+                         @current-change="reloadData"
+                         :current-page.sync="currentPage"
+                         :page-size="pageSize"
+                         :layout="paginationLayout"
+                         :total="total" />
         </slot>
       </el-col>
     </el-row>
@@ -47,6 +49,7 @@
   import ElPagination from 'element-ui/lib/pagination'
   import VLoading from 'element-ui/lib/loading'
   import config from './config'
+  import axios from 'axios'
 
   const qs = require('qs')
 
@@ -88,23 +91,25 @@
         type: String
       },
       http: {
-        type: [Object],
-        default: () => null
+        type: [Object, Function],
+        default: () => axios.create()
       }
     },
     name: 'EleDataTables',
     data () {
       return {
         draw: 0,
-        tableData: [],
         currentPage: 1,
         pageSize: 10,
-        total: 0,
         loadingCount: 0,
-        success: true,
-        errorMsg: 'error',
         maxColumnIndex: 0,
-        sort: {}
+        sort: {},
+        error: {
+          // 错误信息
+        },
+        response: {
+          // 服务器响应数据
+        }
       }
     },
     created () {
@@ -114,6 +119,15 @@
     computed: {
       httpInstance () {
         return this.http || config.$http
+      },
+      tableData () {
+        return this.response.hasOwnProperty('data') ? this.response.data.content : []
+      },
+      total () {
+        return this.response.hasOwnProperty('data') ? this.response.data.totalElements : 0
+      },
+      success () {
+        return this.response.status >= 200 && this.response.status < 300
       }
     },
     methods: {
@@ -179,10 +193,8 @@
         this.pageSize = v
         this.reloadData()
       },
-      handleCurrentChange (v) {
-        this.reloadData()
-      },
       spanError ({ row, column, rowIndex, columnIndex }) {
+        console.log(row, column)
         if (this.maxColumnIndex < columnIndex) {
           this.maxColumnIndex = columnIndex
         }
@@ -234,7 +246,7 @@
           }
           ajax = Object.assign({}, ajax, this.ajax) // 如果ajax是个对象，进行合并
           // 无论如何，draw,page,size这三个参数一直作为params发送
-          ajax.params = Object.assign({ draw }, this.serverParams, {
+          ajax.params = Object.assign({ ...draw }, this.serverParams, {
             page: this.currentPage - 1,
             size: this.pageSize
           }, this.ajax.params)
@@ -258,40 +270,16 @@
             // TODO 如果服务器这里不需要draw参数，可以在paramsSerializer方法中删除发送到服务器的数据
             // 当前的draw参数，是为了匹配ajax请求和响应的对应关系而存在的
             paramsSerializer: () => qs.stringify(ajax.params, { arrayFormat: 'repeat' })
-          }).then(({ data, config }) => {
+          }).then(response => {
+            this.error = {}
             // 判断当前响应是否当前请求
             // 后端不再需要强制返回draw
-            if (config.params.draw === this.draw) {
-              if (data instanceof Array) {
-                // TODO 如果直接返回数组应该怎么处理
-              } else {
-                // 对于老版本的的响应的处理，
-                if (data.success) {
-                  this.total = data.recordsTotal
-                  this.tableData = data.data
-                  this.success = true
-                  // 如果当前页数没有获取到数据，递归调用，重新获取数据
-                  if (data.data.length <= 0 && data.recordsTotal > 0) {
-                    this.reloadAjaxData()
-                  }
-                } else if (data.hasOwnProperty('totalElements')) {
-                  // 对于新版本Page响应的响应的处理
-                  this.$set(this, 'success', true)
-                  this.$set(this, 'total', data.totalElements)
-                  this.$set(this, 'tableData', data.content)
-                  if (data.content.length <= 0 && data.totalElements > 0) {
-                    this.reloadAjaxData()
-                  }
-                } else {
-                  this.success = false
-                  this.tableData = [{}]
-                  this.errorMsg = data.error
-                }
-              }
+            if (response.config.params.draw === this.draw) {
+              this.response = response
             }
           }).catch(e => {
-            this.success = false
-            this.tableData = [{}]
+            this.error = e
+            this.response = e.response
             console.error('从服务器获取数据时出错', e)
           }).finally(() => {
             this.loadingCount--
