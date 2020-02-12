@@ -1,6 +1,6 @@
 {
   "name": "element-datatables",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一个基于element-ui的Table组件",
   "author": "ldwqh0 <ldwqh0@outlook.com>",
   "main": "dist",
