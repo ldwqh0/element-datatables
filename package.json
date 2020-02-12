@@ -12,7 +12,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "prepublishOnly": "rimraf dist && babel src/components --out-dir dist/components && cp src/components/EleDataTables.vue dist/components/EleDataTables.vue"
+    "prepublishOnly": "rimraf dist && babel src/components --out-dir dist && cp src/components/EleDataTables.vue dist/EleDataTables.vue"
   },
   "files": [
     "src",
