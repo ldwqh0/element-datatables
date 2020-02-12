@@ -1,5 +1,5 @@
-import EleDataTables from './EleDataTables'
-import config from './config'
+import EleDataTables from './EleDataTables.vue'
+import config from './config.js'
 import axios from 'axios'
 
 EleDataTables.install = function (Vue, { httpInstance = axios.create() } = {}) {
