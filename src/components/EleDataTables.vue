@@ -55,7 +55,10 @@
    */
   export default {
     components: {
-      ElRow, ElCol, ElTable, ElPagination
+      ElRow,
+      ElCol,
+      ElTable,
+      ElPagination
     },
     directives: {
       VLoading
@@ -89,6 +92,10 @@
       http: {
         type: [Object],
         default: () => null
+      },
+      debounceTime: {
+        type: [Number],
+        default: () => 500
       }
     },
     name: 'EleDataTables',
@@ -197,10 +204,10 @@
         // console.log(obj)
       },
       reloadLocalData () {
-        let total = this.total = this.data.length
+        const total = this.total = this.data.length
         let max = this.pageSize * this.currentPage
         max = max > total ? total : max
-        let result = []
+        const result = []
         for (let i = (this.currentPage - 1) * this.pageSize; i < max; i++) {
           result.push(this.data[i])
         }
@@ -211,7 +218,7 @@
           url: '',
           method: 'get'
         }
-        let draw = { draw: ++this.draw }
+        const draw = { draw: ++this.draw }
         let sortArr = []
         let { prop, order } = this.sort
         if (prop && order) {
@@ -226,7 +233,10 @@
         // 构建ajax对象
         if (typeof (this.ajax) === 'string') {
           ajax.url = this.ajax
-          ajax.params = Object.assign({ page: this.currentPage - 1, size: this.pageSize }, draw, this.serverParams)
+          ajax.params = Object.assign({
+            page: this.currentPage - 1,
+            size: this.pageSize
+          }, draw, this.serverParams)
         } else {
           if (!this.ajax.url) {
             throw new Error('ajax url can not be empty')
@@ -241,7 +251,7 @@
         if (!ajax.url) {
           // console.debug('url不存在！不读取数据')
         } else {
-          let sort = ajax.params.sort
+          const sort = ajax.params.sort
           if (sort !== null && sort !== undefined) {
             if (typeof sort === 'string') {
               sortArr.push(sort)
@@ -273,7 +283,7 @@
                   if (data.data.length <= 0 && data.recordsTotal > 0) {
                     this.reloadAjaxData()
                   }
-                } else if (data.hasOwnProperty('totalElements')) {
+                } else if (Object.prototype.hasOwnProperty.call(data, 'totalElements')) {
                   // 对于新版本Page响应的响应的处理
                   this.$set(this, 'success', true)
                   this.$set(this, 'total', data.totalElements)
@@ -303,6 +313,15 @@
         } else if (this.ajax) {
           this.reloadAjaxData()
         }
+      },
+      debounceReload (value) {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          this.currentPage = 1
+          this.reloadAjaxData()
+        }, this.debounceTime)
       }
     },
     watch: {
@@ -312,13 +331,11 @@
       serverParams: {
         deep: true,
         handler (newVal, oldVal) {
-          this.currentPage = 1
-          this.reloadAjaxData()
+          this.debounceReload(newVal)
         }
       },
       ajax (newVal, oldVal) {
-        this.currentPage = 1
-        this.reloadAjaxData()
+        this.debounceReload(newVal)
       }
     }
   }
