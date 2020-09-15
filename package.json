@@ -1,6 +1,6 @@
 {
   "name": "element-datatables",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "一个基于element-ui的Table组件",
   "author": "ldwqh0 <ldwqh0@outlook.com>",
   "main": "dist",
@@ -16,7 +16,8 @@
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    "types"
   ],
   "peerDependencies": {
     "axios": "^0.18.0",
@@ -49,5 +50,6 @@
     "vue-template-compiler": "^2.6.10",
     "vuex": "^3.1.2",
     "vuex-class": "^0.3.2"
-  }
+  },
+  "types": "types/index.d.ts"
 }

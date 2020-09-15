@@ -153,6 +153,8 @@ element-datatable支持两种模式的数据显示,一是ajax服务模式,二是
 * $refs.table.reloadData() 根据当前的信息重新载入数据
 * 其它的实例方法不建议使用
 ## 更新历史
+* 1.0.3 
+  增加类型声明文件
 * 1.0.2
   加入防抖属性debounceTime，实现输入防抖
 * 1.0.0
