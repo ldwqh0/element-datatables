@@ -7,14 +7,13 @@
       </el-menu>
     </el-aside>
     <el-main>
-      <router-view />
+      <router-view/>
     </el-main>
   </el-container>
 </template>
 
 <script>
-  export default {
-  }
+export default {}
 </script>
 <style lang="less">
 </style>
