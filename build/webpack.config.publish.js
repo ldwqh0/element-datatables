@@ -50,7 +50,7 @@ module.exports = {
     new VueLoaderPlugin()
   ],
   output: {
-    libraryTarget: 'commonjs2',
+    libraryTarget: 'umd',
     path: path.resolve(__dirname, '../', 'lib')
   }
 }
