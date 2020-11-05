@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue, { PluginObject } from 'vue'
 import { AxiosInstance } from 'axios'
 
 declare interface EleDataTablesOptions {
@@ -6,7 +6,10 @@ declare interface EleDataTablesOptions {
 }
 
 declare class EleDataTables extends Vue {
-  static install (vue: typeof Vue, options?: EleDataTablesOptions): void
+  reloadData: () => void
 }
 
-export default EleDataTables
+declare const plugin: PluginObject<EleDataTablesOptions>
+
+export { EleDataTables }
+export default plugin

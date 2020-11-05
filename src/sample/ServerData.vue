@@ -17,22 +17,22 @@
   </div>
 </template>
 <script>
-import EleDataTables from '../lib'
-import {TableColumn as ElTableColumn} from 'element-ui'
+  import { EleDataTables } from '../lib'
+  import { TableColumn as ElTableColumn } from 'element-ui'
 
-export default {
-  components: {
-    EleDataTables,
-    ElTableColumn
-  },
-  methods: {
-    op(value) {
-      alert('你点击了' + JSON.stringify(value))
+  export default {
+    components: {
+      EleDataTables,
+      ElTableColumn
     },
+    methods: {
+      op (value) {
+        alert('你点击了' + JSON.stringify(value))
+      },
 
-    handleSelectionChange(val) {
-      this.multipleSelection = val
+      handleSelectionChange (val) {
+        this.multipleSelection = val
+      }
     }
   }
-}
 </script>

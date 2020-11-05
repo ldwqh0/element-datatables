@@ -1,3 +1,7 @@
-import EleDataTables from "./EleDataTables";
+import EleDataTables from './EleDataTables'
+import config from './config'
 
-export default EleDataTables
+export { EleDataTables, config }
+
+
+
