@@ -1,31 +1,33 @@
 <template>
   <div v-loading="showLoading && loadingCount>0" class="b">
     <el-table v-if="!success" :span-method="spanError">
-      <slot>发生错误</slot>
+      <slot name="error">发生错误</slot>
     </el-table>
-    <el-table
-        :data="tableData"
-        v-if="success"
-        @select="onSelect"
-        @select-all="onSelectAll"
-        @selection-change="onSelectionChange"
-        @cell-mouse-enter="onCellMouseEnter"
-        @cell-mouse-leave="onCellMouseLeave"
-        @cell-click="onCellClick"
-        @cell-dblclick="onCellDblclick"
-        @row-click="onRowClick"
-        @row-contextmenu="onRowContextmenu"
-        @row-dblclick="onRowDblclick"
-        @header-click="onHeaderClick"
-        @header-contextmenu="onHeaderContextmenu"
-        @sort-change="onSortChange"
-        @filter-change="onFilterChange"
-        @current-change="onCurrentChange"
-        @header-dragend="onHeaderDragend"
-        @expand-change="onExpandChange"
-        :span-method="spanMethod">
-      <slot>暂无数据</slot>
-    </el-table>
+    <slot name="table" :data="tableData" v-if="success">
+      <el-table
+          :data="tableData"
+          v-if="success"
+          @select="onSelect"
+          @select-all="onSelectAll"
+          @selection-change="onSelectionChange"
+          @cell-mouse-enter="onCellMouseEnter"
+          @cell-mouse-leave="onCellMouseLeave"
+          @cell-click="onCellClick"
+          @cell-dblclick="onCellDblclick"
+          @row-click="onRowClick"
+          @row-contextmenu="onRowContextmenu"
+          @row-dblclick="onRowDblclick"
+          @header-click="onHeaderClick"
+          @header-contextmenu="onHeaderContextmenu"
+          @sort-change="onSortChange"
+          @filter-change="onFilterChange"
+          @current-change="onCurrentChange"
+          @header-dragend="onHeaderDragend"
+          @expand-change="onExpandChange"
+          :span-method="spanMethod">
+        <slot name="default">暂无数据</slot>
+      </el-table>
+    </slot>
     <el-row>
       <el-col :span="24" style="text-align: right;">
         <slot name="pagination">

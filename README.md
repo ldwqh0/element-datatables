@@ -153,6 +153,8 @@ element-datatable支持两种模式的数据显示,一是ajax服务模式,二是
 * $refs.table.reloadData() 根据当前的信息重新载入数据
 * 其它的实例方法不建议使用
 ## 更新历史
+* 1.0.8
+  添加一个name=table插槽，使得前端可以自定义表格内容
 * 1.0.7
   重新修改插件模式和typescript定义文件
 * 1.0.4
