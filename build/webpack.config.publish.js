@@ -16,16 +16,19 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.m?js$/,
-      exclude: /(node_modules|bower_components)/,
-      loader: 'babel-loader'
+      test: /((m?j)|t)s$/,
+      loader: 'ts-loader',
+      options: {
+        appendTsSuffixTo: [/\.vue$/],
+        transpileOnly: true
+      }
     }, {
       test: /\.vue$/,
       loader: 'vue-loader'
     }]
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json', '.ts'],
     alias: {
       '@': path.resolve(__dirname, '../', 'src')
     }
@@ -49,6 +52,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new VueLoaderPlugin()
   ],
+  target: ['es5'],
   output: {
     libraryTarget: 'umd',
     path: path.resolve(__dirname, '../', 'lib')

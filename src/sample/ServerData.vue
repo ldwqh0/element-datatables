@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <h1>ele-data-tables</h1>
-    <ele-data-tables ajax="/users" ref="renovate" @selection-change="handleSelectionChange">
+    <el-form :model="serverParams">
+      <el-form-item>
+        <el-input v-model="serverParams.keywords"/>
+      </el-form-item>
+    </el-form>
+    <ele-data-tables ajax="/users" ref="renovate" @selection-change="handleSelectionChange"
+                     :server-params="serverParams">
       <el-table-column type="selection" width="55"/>
       <el-table-column prop="id"
                        label="ID"
@@ -16,23 +22,30 @@
     </ele-data-tables>
   </div>
 </template>
-<script>
-  import { EleDataTables } from '../lib'
-  import { TableColumn as ElTableColumn } from 'element-ui'
+<script lang="ts">
+// import { EleDataTables } from '../lib'
+import { TableColumn as ElTableColumn } from 'element-ui'
 
-  export default {
-    components: {
-      EleDataTables,
-      ElTableColumn
+export default {
+  components: {
+    // EleDataTables,
+    ElTableColumn
+  },
+  methods: {
+    op (value: any) {
+      alert('你点击了' + JSON.stringify(value))
     },
-    methods: {
-      op (value) {
-        alert('你点击了' + JSON.stringify(value))
-      },
 
-      handleSelectionChange (val) {
-        this.multipleSelection = val
+    handleSelectionChange (val: any) {
+      // this.multipleSelection = val
+    }
+  },
+  data () {
+    return {
+      serverParams: {
+        keywords: ''
       }
     }
   }
+}
 </script>

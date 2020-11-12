@@ -12,7 +12,7 @@
   </el-container>
 </template>
 
-<script>
+<script lang="ts">
 export default {}
 </script>
 <style lang="less">
