@@ -40,6 +40,7 @@ module.exports = {
     vue: 'vue',
     axios: 'axios',
     qs: 'qs',
+    'vue-datalist': 'vue-datalist',
     'element-ui': 'element-ui',
     'element-ui/lib/row': 'element-ui/lib/row',
     'element-ui/lib/col': 'element-ui/lib/col',
@@ -54,7 +55,7 @@ module.exports = {
   ],
   target: ['es5'],
   output: {
-    libraryTarget: 'umd',
+    libraryTarget: 'commonjs2',
     path: path.resolve(__dirname, '../', 'lib')
   }
 }

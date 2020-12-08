@@ -1,13 +1,13 @@
 import { EleDataTables } from '@/lib/ele-data-tables'
-import { config, DataTables } from '@/lib/data-tables'
+import { config, DataList } from 'vue-datalist'
 import axios from 'axios'
 import _Vue from 'vue'
 
-export { EleDataTables, DataTables }
+export { EleDataTables, DataList, config }
 
 export default {
-  install (Vue: typeof _Vue, { httpInstance = axios.create() } = {}) {
-    config.$http = httpInstance
+  install (Vue: typeof _Vue, { httpInstance } = { httpInstance: axios.create() }) {
+    config.httpInstance = httpInstance
     Vue.component('EleDataTables', EleDataTables)
   }
 }

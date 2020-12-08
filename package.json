@@ -1,6 +1,6 @@
 {
   "name": "element-datatables",
-  "version": "2.0.0-beta3",
+  "version": "2.0.0-beta9",
   "description": "一个基于element-ui的Table组件",
   "author": "ldwqh0 <ldwqh0@outlook.com>",
   "main": "lib/index.js",
@@ -14,13 +14,21 @@
     "server": "webpack serve --config build/webpack.config.dev.js",
     "prepublishOnly": "webpack --config build/webpack.config.publish.js"
   },
+  "dependencies": {
+    "axios": "^0.15.0",
+    "qs": "^6.5.0",
+    "vue-datalist": "^1.0.0-beta6",
+    "lodash": "^4.17.20"
+  },
   "peerDependencies": {
     "axios": "^0.15.0",
     "element-ui": "^2.2.0",
     "qs": "^6.5.0",
-    "vue": "^2.5.0"
+    "vue": "^2.5.0",
+    "vue-datalist": "^1.0.0-beta6"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.165",
     "@types/qs": "^6.9.5",
     "axios": "^0.15.0",
     "clean-webpack-plugin": "^3.0.0",
@@ -34,6 +42,7 @@
     "ts-loader": "^8.0.11",
     "typescript": "^4.0.5",
     "vue": "^2.5.0",
+    "vue-datalist": "^1.0.0-beta4",
     "vue-loader": "^15.9.4",
     "vue-router": "^3.4.8",
     "vue-style-loader": "^4.1.2",
@@ -42,14 +51,10 @@
     "webpack-cli": "^4.1.0",
     "webpack-dev-server": "^3.11.0"
   },
-  "types": "types/lib/index.d.ts",
+  "types": "types",
   "files": [
     "src/lib",
-    "types/lib",
+    "types",
     "lib"
-  ],
-  "dependencies": {
-    "@types/lodash": "^4.14.165",
-    "lodash": "^4.17.20"
-  }
+  ]
 }
