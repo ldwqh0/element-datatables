@@ -10,7 +10,11 @@
              :http="http">
     <template #list="{data}">
       <slot name="table" :data="data">
-        <el-table :data="data">
+        <el-table :data="data"
+                  @selection-change="selectionChange"
+                  @cell-click="cellClick"
+                  @row-click="rowClick"
+                  @sort-change="sortChange">
           <slot name="default"/>
         </el-table>
       </slot>
@@ -96,6 +100,18 @@ export default Vue.extend({
   methods: {
     reloadData () {
       (this.$refs.list as any).reloadData()
+    },
+    selectionChange (selection: any) {
+      this.$emit('selection-change', selection)
+    },
+    cellClick (row: any, column: any, cell: any, event: any) {
+      this.$emit('cell-click', row, column, cell, event)
+    },
+    rowClick (row: any, column: any, event: any) {
+      this.$emit(row, column, event)
+    },
+    sortChange (event) {
+      this.$emit('sort-change', event)
     }
   },
   data () {
