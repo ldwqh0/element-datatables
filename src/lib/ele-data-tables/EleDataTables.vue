@@ -108,9 +108,9 @@ export default Vue.extend({
       this.$emit('cell-click', row, column, cell, event)
     },
     rowClick (row: any, column: any, event: any) {
-      this.$emit(row, column, event)
+      this.$emit("row-click", row, column, event)
     },
-    sortChange (event) {
+    sortChange (event:any) {
       this.$emit('sort-change', event)
     }
   },
