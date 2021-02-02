@@ -31,42 +31,42 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue'
-import { AxiosInstance, AxiosRequestConfig } from 'axios'
-import ElTable from 'element-ui/lib/table'
-import ElPagination from 'element-ui/lib/pagination'
-import VLoading from 'element-ui/lib/loading'
-import { DataList } from 'vue-datalist'
+  import Vue, { PropType } from 'vue'
+  import { AxiosInstance, AxiosRequestConfig } from 'axios'
+  import ElTable from 'element-ui/lib/table'
+  import ElPagination from 'element-ui/lib/pagination'
+  import VLoading from 'element-ui/lib/loading'
+  import { DataList } from 'vue-datalist'
 
-interface Sort {
-  prop: string,
-  order: string
-}
+  interface Sort {
+    prop: string,
+    order: string
+  }
 
-interface Pagination {
-  page: number,
-  size: number,
-  total: number,
-}
+  interface Pagination {
+    page: number,
+    size: number,
+    total: number,
+  }
 
-interface AjaxFunction {
-  (sererParams: any, pagination: Pagination, sort: Sort, draw: number): AxiosRequestConfig
-}
+  interface AjaxFunction {
+    (sererParams: any, pagination: Pagination, sort: Sort, draw: number): AxiosRequestConfig
+  }
 
-export default Vue.extend({
-  components: {
-    DataList,
-    ElTable,
-    ElPagination,
-  },
-  directives: {
-    'VLoading': VLoading
-  },
-  props: {
-    data: {
-      required: false,
-      default: (): null => null,
-      type: [Array] as PropType<any[] | null>
+  export default Vue.extend({
+    components: {
+      DataList,
+      ElTable,
+      ElPagination,
+    },
+    directives: {
+      'VLoading': VLoading
+    },
+    props: {
+      data: {
+        required: false,
+        default: (): null => null,
+        type: [Array] as PropType<any[] | null>
     },
     ajax: {
       required: false,
@@ -111,6 +111,13 @@ export default Vue.extend({
       this.$emit("row-click", row, column, event)
     },
     sortChange (event:any) {
+      if (this.data && this.data.length > 0) {
+        // 如果是本地数据，不进行特殊处理
+      } else {
+        this.sort = event
+        // 如果是服务端数据，重新加载数据
+        this.reloadData()
+      }
       this.$emit('sort-change', event)
     }
   },
