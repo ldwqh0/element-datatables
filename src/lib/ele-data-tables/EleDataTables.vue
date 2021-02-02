@@ -6,7 +6,7 @@
              :server-params="serverParams"
              :save-state="saveState"
              :debounce-time="debounceTime"
-             :sort="sortToUse"
+             :sort="sorts"
              :http="http">
     <template #list="{data}">
       <slot name="table" :data="data">
@@ -99,9 +99,27 @@
       sort: {
         required: false,
         default: () => ({}),
-        type: [Object, Array] as PropType<Sort | Sort[]>
+        type: [Object, Array, String] as PropType<Sort | Sort[] | string>
       }
     },
+    created () {
+      const parseStringToSort = (str: string): Sort[] => {
+        return str.split(';')
+            .map(v => {
+              const [prop, order] = v.split(',')
+              return { prop, order } as Sort
+            })
+      }
+      // 初始化排序信息
+      if (Array.isArray(this.sort)) {
+        this.sorts.push(...this.sort)
+      } else if ((typeof this.sort) === 'string') {
+        this.sorts.push(...(parseStringToSort(this.sort as string)))
+      } else {
+        this.sorts.push(this.sort as Sort)
+      }
+    },
+
     methods: {
       reloadData () {
         (this.$refs.list as any).reloadData()
@@ -131,7 +149,6 @@
         }
       },
       sortChange (event: any) {
-
         if (this.data && this.data.length > 0) {
           // 如果是本地数据，不进行特殊处理
         } else {
@@ -142,23 +159,12 @@
         this.$emit('sort-change', event)
       }
     },
-    computed: {
-      sortToUse (): Sort[] {
-        const result: Sort[] = []
-        if (Array.isArray(this.sort)) {
-          result.push(...this.sort)
-        } else {
-          result.push(this.sort as Sort)
-        }
-        result.push(...this.sorts)
-        return result
-      }
-    },
-    data () {
-      const data: { sorts: Sort[] } = {
+    data (): {
+      sorts: Sort[]
+    } {
+      return {
         sorts: []
       }
-      return data
     }
   })
 </script>
