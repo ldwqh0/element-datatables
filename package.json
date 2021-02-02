@@ -1,6 +1,6 @@
 {
   "name": "element-datatables",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "一个基于element-ui的Table组件",
   "author": "ldwqh0 <ldwqh0@outlook.com>",
   "main": "lib/index.js",
@@ -17,7 +17,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "qs": "^6.9.6",
-    "vue-datalist": "^1.0.1",
+    "vue-datalist": "^1.0.2",
     "lodash": "^4.17.20"
   },
   "peerDependencies": {
@@ -25,7 +25,7 @@
     "element-ui": "^2.2.0",
     "qs": "^6.5.0",
     "vue": "^2.5.0",
-    "vue-datalist": "^1.0.0-beta6"
+    "vue-datalist": "^1.0.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.165",
@@ -42,7 +42,7 @@
     "ts-loader": "^8.0.11",
     "typescript": "^4.0.5",
     "vue": "^2.5.0",
-    "vue-datalist": "^1.0.0-beta4",
+    "vue-datalist": "^1.0.2",
     "vue-loader": "^15.9.4",
     "vue-router": "^3.4.8",
     "vue-style-loader": "^4.1.2",
