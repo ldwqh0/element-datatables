@@ -55,7 +55,7 @@ module.exports = {
   ],
   target: ['es5'],
   output: {
-    libraryTarget: 'commonjs2',
+    libraryTarget: 'umd',
     path: path.resolve(__dirname, '../', 'lib')
   }
 }
