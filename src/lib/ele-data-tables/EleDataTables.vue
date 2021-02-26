@@ -15,16 +15,17 @@
                   @cell-click="cellClick"
                   @row-click="rowClick"
                   @sort-change="sortChange">
-          <slot name="default"/>
+          <slot name="default" />
         </el-table>
       </slot>
     </template>
     <template #pagination="{pagination}">
       <slot name="pagination" :pagination="pagination">
-        <el-pagination style="text-align: right" layout="sizes, prev, pager, next,total"
+        <el-pagination style="text-align: right"
+                       :layout="layout"
                        :total="pagination.total"
                        :page-size.sync="pagination.size"
-                       :current-page.sync="pagination.page"/>
+                       :current-page.sync="pagination.page" />
       </slot>
     </template>
   </data-list>
@@ -100,6 +101,11 @@
         required: false,
         default: () => ({}),
         type: [Object, Array, String] as PropType<Sort | Sort[] | string>
+      },
+      layout: {
+        required: false,
+        default: () => 'total, sizes, prev, pager, next, jumper',
+        type: [String]
       }
     },
     created () {
