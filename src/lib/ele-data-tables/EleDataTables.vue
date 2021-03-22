@@ -21,7 +21,7 @@
     </template>
     <template #pagination="{pagination}">
       <slot name="pagination" :pagination="pagination">
-        <el-pagination style="text-align: right"
+        <el-pagination :style="{'text-align': paginationAlign}"
                        :layout="layout"
                        :total="pagination.total"
                        :page-size.sync="pagination.size"
@@ -105,6 +105,11 @@
       layout: {
         required: false,
         default: () => 'total, sizes, prev, pager, next, jumper',
+        type: [String]
+      },
+      paginationAlign: {
+        required: false,
+        default: () => 'right',
         type: [String]
       }
     },
