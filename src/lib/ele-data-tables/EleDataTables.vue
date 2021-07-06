@@ -7,7 +7,10 @@
              :save-state="saveState"
              :debounce-time="debounceTime"
              :sort="sorts"
-             :http="http">
+             :http="http"
+             @loading="loading=true"
+             @complete="loading=false"
+             v-loading="loading">
     <template #list="{data}">
       <slot name="table" :data="data">
         <el-table :data="data"
@@ -171,10 +174,12 @@
       }
     },
     data (): {
-      sorts: Sort[]
+      sorts: Sort[],
+      loading: boolean
     } {
       return {
-        sorts: []
+        sorts: [],
+        loading: false
       }
     }
   })
