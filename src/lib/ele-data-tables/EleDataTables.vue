@@ -14,11 +14,12 @@
     <template #list="{data}">
       <slot name="table" :data="data">
         <el-table :data="data"
+                  :row-class-name="rowClassName"
                   @selection-change="selectionChange"
                   @cell-click="cellClick"
                   @row-click="rowClick"
                   @sort-change="sortChange">
-          <slot name="default" />
+          <slot name="default"/>
         </el-table>
       </slot>
     </template>
@@ -28,7 +29,7 @@
                        :layout="layout"
                        :total="pagination.total"
                        :page-size.sync="pagination.size"
-                       :current-page.sync="pagination.page" />
+                       :current-page.sync="pagination.page"/>
       </slot>
     </template>
   </data-list>
@@ -114,6 +115,10 @@
         required: false,
         default: () => 'right',
         type: [String]
+      },
+      rowClassName: {
+        type: [String, Function],
+        default: () => ''
       }
     },
     created () {
