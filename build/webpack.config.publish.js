@@ -53,8 +53,9 @@ module.exports = {
     new CleanWebpackPlugin(),
     new VueLoaderPlugin()
   ],
-  target: ['es5'],
+  target: ['web'],
   output: {
+    // library: 'element-datatables',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, '../', 'lib')
   }
