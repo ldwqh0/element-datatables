@@ -126,7 +126,8 @@ element-datatable支持两种模式的数据显示,一是ajax服务模式,二是
 #### 与服务器相关的属性
 
 * ajax:
-  表示发送到服务器的请求,可以是一个字符串或者是一个完整的ajax对象.如果是一个字符串,则会向字符串指定的地址发送get请求以获取数据.本组件使用axios发送ajax请求,相关的ajax对象与[axios](https://github.com/axios/axios)的config相同
+  表示发送到服务器的请求,可以是一个字符串或者是一个完整的ajax对象.如果是一个字符串,则会向字符串指定的地址发送get请求以获取数据.本组件使用axios发送ajax请求,相关的ajax对象与[axios](https://github.com/axios/axios)
+  的config相同
 * server-params: 表示作为发送到服务器的附加参数,如果ajax请求的类型为get,则会将附件参数作为params发送到服务器,其它类型的请求会将数据作为data发送到服务器.
 
 #### 发送到服务器的参数
@@ -209,6 +210,7 @@ element-datatable支持两种模式的数据显示,一是ajax服务模式,二是
 
 ## 更新历史
 
+* 2.0.14 对外$emit一些底层事件
 * 2.0.12 修改一个底层数据加载模块的错误
 * 2.0.10 增加加载loading框
 * 2.0.9 添加默认分页组件对齐方式的属性
