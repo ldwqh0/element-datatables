@@ -15,6 +15,7 @@
     <template #list="{data}">
       <slot name="table" :data="data">
         <el-table :data="data"
+                  ref="table"
                   :row-class-name="rowClassName"
                   @selection-change="selectionChange"
                   @cell-click="cellClick"
@@ -185,6 +186,21 @@
       completeHandler () {
         this.loading = false
         this.$emit('complete')
+      },
+      clearSelection () {
+        (this.$refs.table as any).clearSelection()
+      },
+      toggleRowSelection (row: any, selected?: boolean) {
+        (this.$refs.table as any).toggleRowSelection(row, selected)
+      },
+      toggleAllSelection () {
+        (this.$refs.table as any).toggleAllSelection()
+      },
+      toggleRowExpansion (row: any, expanded?: boolean) {
+        (this.$refs.table as any).toggleRowExpansion(row, expanded)
+      },
+      setCurrentRow (row: any) {
+        (this.$refs.table as any).setCurrentRow(row)
       }
     },
     data (): {
