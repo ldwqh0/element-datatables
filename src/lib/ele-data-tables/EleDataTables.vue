@@ -8,8 +8,9 @@
              :debounce-time="debounceTime"
              :sort="sorts"
              :http="http"
-             @loading="loading=true"
-             @complete="loading=false"
+             @data-change="$emit('data-change',$event)"
+             @loading="loadingHandler"
+             @complete="completeHandler"
              v-loading="loading">
     <template #list="{data}">
       <slot name="table" :data="data">
@@ -19,7 +20,7 @@
                   @cell-click="cellClick"
                   @row-click="rowClick"
                   @sort-change="sortChange">
-          <slot name="default"/>
+          <slot name="default" />
         </el-table>
       </slot>
     </template>
@@ -29,7 +30,7 @@
                        :layout="layout"
                        :total="pagination.total"
                        :page-size.sync="pagination.size"
-                       :current-page.sync="pagination.page"/>
+                       :current-page.sync="pagination.page" />
       </slot>
     </template>
   </data-list>
@@ -124,10 +125,10 @@
     created () {
       const parseStringToSort = (str: string): Sort[] => {
         return str.split(';')
-            .map(v => {
-              const [prop, order] = v.split(',')
-              return { prop, order } as Sort
-            })
+          .map(v => {
+            const [prop, order] = v.split(',')
+            return { prop, order } as Sort
+          })
       }
       // 初始化排序信息
       if (Array.isArray(this.sort)) {
@@ -176,6 +177,14 @@
           this.reloadData()
         }
         this.$emit('sort-change', event)
+      },
+      loadingHandler () {
+        this.loading = true
+        this.$emit('loading')
+      },
+      completeHandler () {
+        this.loading = false
+        this.$emit('complete')
       }
     },
     data (): {
